@@ -1,26 +1,51 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div>
+    <nav-bar :logFlag="logFlag" @SearcedItems="SearcedItems"></nav-bar>
+  </div>
+  <router-view :loggedUser="loggedUser" @globalLoggedUser="globalLoggedUser" @handleLogFlag="handleLogFlag"  :searcedItems="searcedItems"/>
 </template>
-
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import NavBar from "./components/NavBar.vue";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    HelloWorld
-  }
-}
+    NavBar
+  },
+  data() {
+    return {
+      logFlag: false,
+      searcedItems:"",
+      loggedUser: "" // use it in shopping cart page when getting the cardNum, expDate
+    };
+  },
+  methods: {
+    handleLogFlag(logFlag) {
+      this.logFlag = logFlag;
+    },
+    SearcedItems(val){
+      this.searcedItems = val; 
+    },
+    globalLoggedUser(loggedUser){
+      this.loggedUser = loggedUser // use it in shopping cart page when getting the cardNum, expDate
+    }
+  },
+   mounted() {
+    this.loggedUser = JSON.parse(sessionStorage.getItem("loggedUser"));
+    if (this.loggedUser){
+      this.logFlag = true
+    }
+  },
+};
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700&display=swap');
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Lato', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 </style>
